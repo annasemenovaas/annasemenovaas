@@ -43,7 +43,7 @@ class Player(GameSprite):
 
 
 player1 = Player('racket.png', 5, win_height-100,50,150, 10 )
-player2 = Player('racket.png', 645, win_height+100,50,150, 10 )
+player2 = Player('racket.png', 645, win_height-50,50,150, 10 )
 ball = GameSprite('tenis_ball.png', 250, 250, 50,50,4 )
 
 font1 = font.Font(None, 35)
@@ -57,24 +57,26 @@ while game:
         if e.type == QUIT:
             game = False
     if finish != True:
+        window.fill((200,255,255))
+        player1.update()
+        player2.updatel()
+        player1.reset()
+        player2.reset()
+        ball.reset()
         ball.rect.x += speed_x
         ball.rect.y += speed_y
-    if ball.rect.y > win_height-50 or ball.rect.y < 0:
-        speed_y *= -1
-    if sprite.collide_rect(player1, ball) or sprite.collide_rect(player2, ball):
-        speed_x *= -1 
-    if ball.rect.x < win_height:
-        finish = True
-        window.blit(lose1, (200, 200))
-    if ball.rect.x > win_height:
-        finish = True
-        window.blit(lose2, (200, 200))   
-    window.fill((200,255,255))
-    player1.update()
-    player2.updatel()
-    player1.reset()
-    player2.reset()
-    ball.reset()
+        if ball.rect.y > win_height-50 or ball.rect.y < 0:
+            speed_y *= -1
+        if sprite.collide_rect(player1, ball) or sprite.collide_rect(player2, ball):
+            speed_x *= -1 
+            speed_y *= -1
+        if ball.rect.x < 0:
+            finish = True
+            window.blit(lose1, (200, 200))
+        if ball.rect.x > win_width-50:
+            finish = True
+            window.blit(lose2, (200, 200))   
+        
     display.update()
     clock.tick(FPS)     
 
